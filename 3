@@ -1,0 +1,101 @@
+   internal class Program
+    {
+        public interface IPriseable
+        {
+            decimal GetPrice();
+        }
+        public interface IWarrantable
+        {
+            int GetWarrantyMonths();
+        }
+
+        public class Phone : IPriseable, IWarrantable
+        {
+            public string Model { get; set; }
+            private decimal _price;
+            private int _warrantyMonths;
+
+            public Phone(string model, decimal price, int warrantyMonths)
+            {
+                Model = model;
+                _price = price;
+                _warrantyMonths = warrantyMonths;
+            }
+
+            public decimal GetPrice()
+            {
+                return _price;
+            }
+            public int GetWarrantyMonths()
+            {
+                return _warrantyMonths;
+            }
+            public void DisplayInfo()
+            {
+                Console.WriteLine($"Телефон {Model}: {_price} руб., гарантия {_warrantyMonths} мес.");
+            }
+
+            public class Laptop : IPriseable
+            {
+                public string Model { get; set; }
+                private decimal _price;
+
+                public Laptop(string model, decimal price)
+                {
+                    Model = model;
+                    _price = price;
+                }
+                public decimal GetPrice()
+                {
+                    return _price;
+                }
+                public void DisplayInfo()
+                {
+                    Console.WriteLine($"Ноутбук {Model}: {_price} руб.");
+                }
+                static void Main(string[] args)
+                {
+                    Console.WriteLine("--- Магазин Техники ---");
+                    Console.WriteLine();
+
+                    Phone phone1 = new Phone("IPhone 20", 100000m, 30);
+                    Phone phone2 = new Phone("Redmi Note 13 mini", 30000m, 10);
+                    Laptop laptop1 = new Laptop("MacBook Pro + AI", 250000m);
+                    Laptop laptop2 = new Laptop("Nitro V15", 120000m);
+
+                    IPriseable[] products = {phone1, phone2, laptop1, laptop2};
+
+                    Console.WriteLine("--- Каталог Товаров ---");
+                    foreach (var product in products)
+                    {
+                        if (product is  Phone phone)
+                        {
+                            phone.DisplayInfo();
+                        }
+                        else if (product is Laptop laptop)
+                        {
+                            laptop.DisplayInfo();
+                        }
+                    }
+                    Console.WriteLine();
+
+                    Console.WriteLine("--- Расчёты и Гарантии ---");
+                    decimal totalCost = 0;
+
+                    foreach (var product in products)
+                    {
+                        totalCost += product.GetPrice();
+
+                        if (product is IWarrantable warrantableProduct)
+                        {
+                            int warranty = warrantableProduct.GetWarrantyMonths();
+                            string productName = product is Phone p ? $"Телефон {p.Model}":product.GetType().Name;
+                            Console.WriteLine($"{productName} - гарантия {warranty} мес.");
+                        }
+                    }
+                    Console.WriteLine($"\nОбщая стоимость всех товаров: {totalCost} руб.");
+                }
+            }
+        }
+    }
+}
