@@ -1,0 +1,98 @@
+ internal class Program
+    {
+        public interface ITurnable
+        {
+            void TurnOn();
+            void TurnOff();
+        }
+        public interface ILevelSettable
+        {
+            void SetLevel(int level);
+        }
+
+        public class Lamp : ITurnable, ILevelSettable
+        {
+            private int _level;
+            private bool _isOn;
+
+            public void TurnOn()
+            {
+                _isOn = true;
+                _level = 100;
+                Console.WriteLine($"Лампа включена. Уровень: {_level}");
+            }
+            public void TurnOff()
+            {
+                _isOn = false;
+                _level = 0;
+                Console.WriteLine($"Лампа выключена. Уровень: {_level}");
+            }
+            public void SetLevel(int level)
+            {
+                if (level < 0) level = 0;
+                if (level > 100) level = 100;
+
+                _level = level;
+                Console.WriteLine($"Уровень лампы установлен: {_level}");
+            }
+            public void PrintStatus()
+            {
+                string status = _isOn ? "включена" : "выключена";
+                Console.WriteLine($"Лампа: {status}, Уровень: {_level}");
+            }
+            public class Fan : ITurnable
+            {
+                private bool _isOn;
+                public void TurnOn()
+                {
+                    _isOn = true;
+                    Console.WriteLine("Вентилятор включён");
+                }
+                public void TurnOff()
+                {
+                    _isOn = false;
+                    Console.WriteLine("Вентилятор выключен");
+                }
+                public void PrintStatus()
+                {
+                    string status = _isOn ? "включен" : "выключен";
+                    Console.WriteLine($"Вентилятор: {status}");
+                }
+            }
+        }
+        static void Main(string[] args)
+        {ЗАДАНИЕ 2
+            Lamp lamp = new Lamp();
+            Fan fan = new Fan();
+
+            Console.WriteLine("--- Умный Дом ---");
+            Console.WriteLine();
+
+            Console.WriteLine("--- Лампа ---");
+            lamp.TurnOn();
+            lamp.SetLevel(30);
+            lamp.TurnOff();
+            Console.WriteLine();
+
+            Console.WriteLine("--- Вентилятор ---");
+            fan.TurnOn();
+            fan.TurnOff();
+            Console.WriteLine();
+
+            Console.WriteLine("--- Все устройства ---");
+            ITurnable[] devices = { lamp, fan };
+
+            foreach (var device in devices)
+            {
+                device.TurnOn();
+                device.TurnOff();
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("--- Допольнительно для лампы ---");
+            lamp.TurnOff();
+            lamp.SetLevel(30);
+            lamp.TurnOff();
+        }
+    }
+}
