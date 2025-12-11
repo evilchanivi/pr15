@@ -1,0 +1,73 @@
+   internal class Program
+    {
+        public interface IAttacker
+        {
+            void Attack();
+        }
+        public interface IHealer
+        {
+            void Heal();
+        }
+
+        public class Warrior : IAttacker
+        {
+            public string Name { get; set; }
+            public Warrior(string name)
+            {
+                Name = name;
+            }
+
+            public void Attack()
+            {
+                Console.WriteLine($"Воин {Name} атакует Молотом!");
+            }
+
+            public class Mage : IAttacker, IHealer
+            {
+                public string Name { get; set; }
+                public Mage(string name)
+                {
+                    Name = name;
+                }
+                public void Attack()
+                {
+                    Console.WriteLine($"Маг {Name} выпускает молнию!");
+                }
+                public void Heal()
+                {
+                    Console.WriteLine($"Маг {Name} исцеляет раны!");
+                }
+            }
+
+            static void Main(string[] args)
+            {
+                Console.WriteLine("--- Игроки и Способности ---");
+                Console.WriteLine();
+
+                Warrior warrior = new Warrior("Кратос");
+                Mage mage = new Mage("Гарри Потер");
+
+                object[] characters = { warrior, mage };
+
+                Console.WriteLine("--- Все Атакующие ---");
+                foreach (var character in characters)
+                {
+                    if (character is IAttacker attacker)
+                    {
+                        attacker.Attack();
+                    }
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("--- Все Лечащие ---");
+                foreach (var character in characters)
+                {
+                    if (character is IHealer healer)
+                    {
+                        healer.Heal();
+                    }
+                }
+            }
+        }
+    }
+}
