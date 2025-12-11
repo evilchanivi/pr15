@@ -1,0 +1,68 @@
+ internal class Program
+  {
+         public interface IWorkable
+          {
+              void Work();               
+          }
+          public interface IRechargeable
+          {
+              void Recharge();
+          }
+      public class Robot : IWorkable, IRechargeable
+      {
+          public string Name { get; set; }
+          public int Energy { get; set; }
+
+          public Robot(string name)
+          {
+              Name = name;
+              Energy = 100;
+          }
+          public void Work()
+          {
+              if (Energy > 20)
+              {
+                  Energy -= 20;
+              }
+              else
+              {
+                  Energy = 0;
+              }
+              Console.WriteLine($"{Name} поработала. Текущая энергия: {Energy}");
+          }
+
+          public void Recharge()
+          {
+              if (Energy <= 50)
+              {
+                  Energy += 50;
+              }
+              else
+              {
+                  Energy = 100;
+              }
+              Console.WriteLine($"{Name} зарядилась. Текущая энергия: {Energy}  :3 ");
+          }
+      }
+      static void Main(string[] args)
+      {
+          Robot robot = new Robot("Ева");
+
+          Console.WriteLine("Начальное состояние:");
+          Console.WriteLine($"{robot.Name} - энергия: {robot.Energy}");
+          Console.WriteLine();
+
+          Console.WriteLine("Работаем 2 раза: ");
+          robot.Work();
+          robot.Work();
+          Console.WriteLine();
+          
+          Console.WriteLine("Заряжемся: ");
+          robot.Recharge();
+          Console.WriteLine();
+
+          Console.WriteLine("Работаем ещё раз: ");
+          robot.Work();
+         }  
+      }
+  }
